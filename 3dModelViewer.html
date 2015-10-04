@@ -27,8 +27,11 @@ function loadObj(){
 
 var altspace = altspace || null;
 var renderer, camera, scene, loader ;
+
+//event listener for key presses.
 window.addEventListener('keyup', function(event) { Key.onKeyup(event)}, false);
 window.addEventListener('keydown', function(event) { Key.onKeydown(event); }, false);
+// enables the proper response/ identification to holding down the key
 var Key = {
   _pressed: {},
 
@@ -44,6 +47,7 @@ var Key = {
   numPlus: 107,
   numDivide: 111,
   numTimes: 106,
+  numEnter: 13,
   
   isDown: function(keyCode) {
     return this._pressed[keyCode];
@@ -55,6 +59,7 @@ var Key = {
     delete this._pressed[event.keyCode];
   }
 };
+//IIFE that decides if we are in altspace/webgl
 (function init(){
 	scene = new THREE.Scene();
 	loader = new THREE.OBJMTLLoader();
@@ -86,9 +91,14 @@ var Key = {
 	//starts the animation so we can see the object.
 	animate();
 }());
+//updates the scene.
 function animate() {
     window.requestAnimationFrame(animate);
     renderer.render(scene, camera);
+    update();
+}
+//takes care of moving the object.
+function update(){
     if (Key.isDown(Key.num6)){
 		obj.translateZ(1);
 	};
@@ -129,5 +139,11 @@ function animate() {
 	if (Key.isDown(Key.num3)){
 		obj.rotateY(Math.PI * (-1)/ 180)
 	};
+	if (Key.isDown(Key.numEnter)){
+		obj.position.set(0,0,0);
+		obj.rotation.set(0,0,0);
+	};
+
 }
 </script></body></html>
+
