@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en"> <head>
 <title>3D Object Viewer</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="http://sdk.altvr.com/lib/three.min.js"></script>
     <script src="http://sdk.altvr.com/lib/OBJMTLLoader.js"></script>
     <script src="http://sdk.altvr.com/lib/MTLLoader.js"></script>
-
+    <div id="transform" style="color: #000099; text-align: center; font-size: 40px;"></div>
+    <div id="scale" style="color: #000099; text-align: center; font-size: 40px;"></div>
+	<div id="rotation" style="color: #000099; text-align: center; font-size: 40px;"></div>
+	
 	
 </head><body><script>
 
@@ -22,9 +26,15 @@ function loadObj(){
 		obj.position.set(0, 0, 0);
 		//adds the obj to the scene to be rendered.
 		scene.add(obj);
+			//starts the animation so we can see the object.
+		animate();
 	});
 }
 
+function addHTML(target,html) {
+  var myTarget = document.getElementById(target);
+    myTarget.innerHTML = html;    
+}
 var altspace = altspace || null;
 var renderer, camera, scene, loader ;
 
@@ -88,8 +98,6 @@ var Key = {
 		scene.add(sceneLight);
 		loadObj();	
 	};
-	//starts the animation so we can see the object.
-	animate();
 }());
 //updates the scene.
 function animate() {
@@ -99,6 +107,9 @@ function animate() {
 }
 //takes care of moving the object.
 function update(){
+	addHTML("transform", String(obj.position.x + " x, " + obj.position.y + " y, " + obj.position.z + " z"));
+	addHTML("scale", String(obj.scale.x + " x, " + obj.scale.y + " y, " + obj.scale.z + " z"));
+	addHTML("rotation", String(obj.rotation.x + " x, " + obj.rotation.y + " y, " + obj.rotation.z + " z"));
     if (Key.isDown(Key.num6)){
 		obj.translateZ(1);
 	};
@@ -131,13 +142,13 @@ function update(){
 		obj.rotateZ(Math.PI * (1)/ 180);
 	};
 	if (Key.isDown(Key.num9)){
-		obj.rotateZ(Math.PI * (-1)/ 180)
+		obj.rotateZ(Math.PI * (-1)/ 180);
 	};
 	if (Key.isDown(Key.num1)){
-		obj.rotateY(Math.PI * (1)/ 180)
+		obj.rotateY(Math.PI * (1)/ 180);
 	};
 	if (Key.isDown(Key.num3)){
-		obj.rotateY(Math.PI * (-1)/ 180)
+		obj.rotateY(Math.PI * (-1)/ 180);
 	};
 	if (Key.isDown(Key.numEnter)){
 		obj.position.set(0,0,0);
