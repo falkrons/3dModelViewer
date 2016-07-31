@@ -1,160 +1,145 @@
 <!DOCTYPE html>
-<html lang="en"> <head>
-<title>3D Object Viewer</title>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script src="http://sdk.altvr.com/lib/three.min.js"></script>
-    <script src="http://sdk.altvr.com/lib/OBJMTLLoader.js"></script>
-    <script src="http://sdk.altvr.com/lib/MTLLoader.js"></script>
-    <div id="transform" style="color: #000099; text-align: center; font-size: 40px;"></div>
-    <div id="scale" style="color: #000099; text-align: center; font-size: 40px;"></div>
-	<div id="rotation" style="color: #000099; text-align: center; font-size: 40px;"></div>
-	
-	
-</head><body><script>
-
-//YOUR OBJ HERE:
-function loadObj(){
-	// enter the .obj and the .mtl file references.
-	loader.load("Models/ClickBeam.obj", "Models/ClickBeam.mtl", function (object){
-		//create a reference to the object
-		obj = object.clone();
-		//sets the initial scale of the obj.
-		obj.scale.set(10, 10, 10);
-		//sets the initial rotation of the obj
-		obj.rotation.set(0, 0, 0);
-		//seta the initial position of the obj.
-		obj.position.set(0, 0, 0);
-		//adds the obj to the scene to be rendered.
-		scene.add(obj);
-			//starts the animation so we can see the object.
-		animate();
-	});
-}
-
-function addHTML(target,html) {
-  var myTarget = document.getElementById(target);
-    myTarget.innerHTML = html;    
-}
-var altspace = altspace || null;
-var renderer, camera, scene, loader ;
-
-//event listener for key presses.
-window.addEventListener('keyup', function(event) { Key.onKeyup(event)}, false);
-window.addEventListener('keydown', function(event) { Key.onKeydown(event); }, false);
-// enables the proper response/ identification to holding down the key
-var Key = {
-  _pressed: {},
-
-  num4: 100,
-  num8: 104,
-  num6: 102,
-  num2: 98,
-  num7: 103,
-  num9: 105,
-  num1: 97,
-  num3: 99,
-  numMinus: 109,
-  numPlus: 107,
-  numDivide: 111,
-  numTimes: 106,
-  numEnter: 13,
-  
-  isDown: function(keyCode) {
-    return this._pressed[keyCode];
-  },
-  onKeydown: function(event) {
-    this._pressed[event.keyCode] = true;
-  },
-  onKeyup: function(event) {
-    delete this._pressed[event.keyCode];
-  }
-};
-//IIFE that decides if we are in altspace/webgl
-(function init(){
-	scene = new THREE.Scene();
-	loader = new THREE.OBJMTLLoader();
-	if(altspace){
-    	renderer = altspace.getThreeJSRenderer({version:'0.2.0'});
-    	loadObj();
-	}else{
-		WIDTH = 1000;
-  		HEIGHT = 800;
-		VIEW_ANGLE = 45,
-		ASPECT = WIDTH / HEIGHT;
-		NEAR = 0.1;
-		FAR = 10000;
-		renderer = new THREE.WebGLRenderer();
-		camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
-		scene.add(camera);
-		camera.position.z = 300;
-		renderer.setSize(WIDTH, HEIGHT);
-      	document.body.appendChild(renderer.domElement); 
-		sceneLight = new THREE.DirectionalLight(0xFFFFFF);
-		// set its position
-		sceneLight.position.x = 10;
-		sceneLight.position.y = 80;
-		sceneLight.position.z = 100;
-		// add to the scene
-		scene.add(sceneLight);
-		loadObj();	
-	};
-}());
-//updates the scene.
-function animate() {
-    window.requestAnimationFrame(animate);
-    renderer.render(scene, camera);
-    update();
-}
-//takes care of moving the object.
-function update(){
-	addHTML("transform", String(obj.position.x + " x, " + obj.position.y + " y, " + obj.position.z + " z"));
-	addHTML("scale", String(obj.scale.x + " x, " + obj.scale.y + " y, " + obj.scale.z + " z"));
-	addHTML("rotation", String(obj.rotation.x + " x, " + obj.rotation.y + " y, " + obj.rotation.z + " z"));
-    if (Key.isDown(Key.num6)){
-		obj.translateZ(1);
-	};
-	if (Key.isDown(Key.num4)){
-		obj.translateZ(-1);
-	};
-	if (Key.isDown(Key.num8)){
-		obj.translateY(1);
-	};
-	if (Key.isDown(Key.num2)){
-		obj.translateY(-1);
-	};
-	if (Key.isDown(Key.numMinus)){
-		obj.translateX(1);
-	};
-	if (Key.isDown(Key.numPlus)){
-		obj.translateX(-1);
-	};
-	if (Key.isDown(Key.numTimes)){
-		obj.scale.x += 0.5;
-		obj.scale.y += 0.5;
-		obj.scale.z += 0.5;
-	};
-	if (Key.isDown(Key.numDivide)){
-		obj.scale.x -= 0.5;
-		obj.scale.y -= 0.5;
-		obj.scale.z -= 0.5;
-	};
-	if (Key.isDown(Key.num7)){
-		obj.rotateZ(Math.PI * (1)/ 180);
-	};
-	if (Key.isDown(Key.num9)){
-		obj.rotateZ(Math.PI * (-1)/ 180);
-	};
-	if (Key.isDown(Key.num1)){
-		obj.rotateY(Math.PI * (1)/ 180);
-	};
-	if (Key.isDown(Key.num3)){
-		obj.rotateY(Math.PI * (-1)/ 180);
-	};
-	if (Key.isDown(Key.numEnter)){
-		obj.position.set(0,0,0);
-		obj.rotation.set(0,0,0);
-	};
-
-}
-</script></body></html>
-
+ <html lang="en"> <head>
+ <title>3D Object Viewer</title>
+ 	<script src="http://sdk.altvr.com/lib/three.min.js"></script>
+     <script src="http://sdk.altvr.com/lib/OBJMTLLoader.js"></script>
+     <script src="http://sdk.altvr.com/lib/MTLLoader.js"></script>
+ 
+ 	
+ </head><body><script>
+ 
+ //YOUR OBJ HERE:
+ function loadObj(){
+ 	// enter the .obj and the .mtl file references.
+ 	loader.load("Models/ClickBeam.obj", "Models/ClickBeam.mtl", function (object){
+ 		//create a reference to the object
+ 		obj = object.clone();
+ 		//sets the initial scale of the obj.
+ 		obj.scale.set(10, 10, 10);
+ 		//sets the initial rotation of the obj
+ 		obj.rotation.set(0, 0, 0);
+ 		//seta the initial position of the obj.
+ 		obj.position.set(0, 0, 0);
+ 		//adds the obj to the scene to be rendered.
+ 		scene.add(obj);
+ 	});
+ }
+ 
+ var altspace = altspace || null;
+ var renderer, camera, scene, loader ;
+ 
+ //event listener for key presses.
+ window.addEventListener('keyup', function(event) { Key.onKeyup(event)}, false);
+ window.addEventListener('keydown', function(event) { Key.onKeydown(event); }, false);
+ // enables the proper response/ identification to holding down the key
+ var Key = {
+   _pressed: {},
+ 
+   num4: 100,
+   num8: 104,
+   num6: 102,
+   num2: 98,
+   num7: 103,
+   num9: 105,
+   num1: 97,
+   num3: 99,
+   numMinus: 109,
+   numPlus: 107,
+   numDivide: 111,
+   numTimes: 106,
+   numEnter: 13,
+   
+   isDown: function(keyCode) {
+     return this._pressed[keyCode];
+   },
+   onKeydown: function(event) {
+     this._pressed[event.keyCode] = true;
+   },
+   onKeyup: function(event) {
+     delete this._pressed[event.keyCode];
+   }
+ };
+ //IIFE that decides if we are in altspace/webgl
+ (function init(){
+ 	scene = new THREE.Scene();
+ 	loader = new THREE.OBJMTLLoader();
+ 	if(altspace){
+     	renderer = altspace.getThreeJSRenderer({version:'0.2.0'});
+     	loadObj();
+ 	}else{
+ 		WIDTH = 1000;
+   		HEIGHT = 800;
+ 		VIEW_ANGLE = 45,
+ 		ASPECT = WIDTH / HEIGHT;
+ 		NEAR = 0.1;
+ 		FAR = 10000;
+ 		renderer = new THREE.WebGLRenderer();
+ 		camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
+ 		scene.add(camera);
+ 		camera.position.z = 300;
+ 		renderer.setSize(WIDTH, HEIGHT);
+       	document.body.appendChild(renderer.domElement); 
+ 		sceneLight = new THREE.DirectionalLight(0xFFFFFF);
+ 		// set its position
+ 		sceneLight.position.x = 10;
+ 		sceneLight.position.y = 80;
+ 		sceneLight.position.z = 100;
+ 		// add to the scene
+ 		scene.add(sceneLight);
+ 		loadObj();	
+ 	};
+ 	//starts the animation so we can see the object.
+ 	animate();
+ }());
+ //updates the scene.
+ function animate() {
+     window.requestAnimationFrame(animate);
+     renderer.render(scene, camera);
+     update();
+ }
+ //takes care of moving the object.
+ function update(){
+     if (Key.isDown(Key.num6)){
+ 		obj.translateZ(1);
+ 	};
+ 	if (Key.isDown(Key.num4)){
+ 		obj.translateZ(-1);
+ 	};
+ 	if (Key.isDown(Key.num8)){
+ 		obj.translateY(1);
+ 	};
+ 	if (Key.isDown(Key.num2)){
+ 		obj.translateY(-1);
+ 	};
+ 	if (Key.isDown(Key.numMinus)){
+ 		obj.translateX(1);
+ 	};
+ 	if (Key.isDown(Key.numPlus)){
+ 		obj.translateX(-1);
+ 	};
+ 	if (Key.isDown(Key.numTimes)){
+ 		obj.scale.x += 0.5;
+ 		obj.scale.y += 0.5;
+ 		obj.scale.z += 0.5;
+ 	};
+ 	if (Key.isDown(Key.numDivide)){
+ 		obj.scale.x -= 0.5;
+ 		obj.scale.y -= 0.5;
+ 		obj.scale.z -= 0.5;
+ 	};
+ 	if (Key.isDown(Key.num7)){
+ 		obj.rotateZ(Math.PI * (1)/ 180);
+ 	};
+ 	if (Key.isDown(Key.num9)){
+ 		obj.rotateZ(Math.PI * (-1)/ 180)
+ 	};
+ 	if (Key.isDown(Key.num1)){
+ 		obj.rotateY(Math.PI * (1)/ 180)
+ 	};
+ 	if (Key.isDown(Key.num3)){
+ 		obj.rotateY(Math.PI * (-1)/ 180)
+ 	};
+ 	if (Key.isDown(Key.numEnter)){
+ 		obj.position.set(0,0,0);
+ 		obj.rotation.set(0,0,0);
+ 	};
