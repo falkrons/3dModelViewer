@@ -5,8 +5,8 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.78.0 commit date:2016-10-24, commit time:12:20, hash:e8299c8</authoring_tool>
     </contributor>
-    <created>2018-04-04T18:30:12</created>
-    <modified>2018-04-04T18:30:12</modified>
+    <created>2018-04-04T18:37:24</created>
+    <modified>2018-04-04T18:37:24</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -98,7 +98,54 @@
       </extra>
     </light>
   </library_lights>
-  <library_images/>
+  <library_images>
+    <image id="house" name="house">
+      <init_from>house.png</init_from>
+    </image>
+  </library_images>
+  <library_effects>
+    <effect id="Material_001-effect">
+      <profile_COMMON>
+        <newparam sid="house-surface">
+          <surface type="2D">
+            <init_from>house</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="house-sampler">
+          <sampler2D>
+            <source>house-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0 0 0 1</color>
+            </ambient>
+            <diffuse>
+              <texture texture="house-sampler" texcoord="UVMap"/>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.5 0.5 0.5 1</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">50</float>
+            </shininess>
+            <index_of_refraction>
+              <float sid="index_of_refraction">1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_materials>
+    <material id="Material_001-material" name="Material_001">
+      <instance_effect url="#Material_001-effect"/>
+    </material>
+  </library_materials>
   <library_geometries>
     <geometry id="ID3-mesh" name="ID3">
       <mesh>
@@ -134,7 +181,7 @@
         <vertices id="ID3-mesh-vertices">
           <input semantic="POSITION" source="#ID3-mesh-positions"/>
         </vertices>
-        <polylist count="17319">
+        <polylist material="Material_001-material" count="17319">
           <input semantic="VERTEX" source="#ID3-mesh-vertices" offset="0"/>
           <input semantic="NORMAL" source="#ID3-mesh-normals" offset="1"/>
           <input semantic="TEXCOORD" source="#ID3-mesh-map-0" offset="2" set="0"/>
@@ -149,7 +196,15 @@
     <visual_scene id="Scene" name="Scene">
       <node id="SketchUp" name="SketchUp" type="NODE">
         <matrix sid="transform">0.0254 0 0 0 0 0.0254 0 0 0 0 0.0254 0 0 0 0 1</matrix>
-        <instance_geometry url="#ID3-mesh" name="SketchUp"/>
+        <instance_geometry url="#ID3-mesh" name="SketchUp">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="Material_001-material" target="#Material_001-material">
+                <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
       </node>
       <node id="Sun" name="Sun" type="NODE">
         <matrix sid="transform">1 0 0 75.20645 0 1 0 167.8442 0 0 1 -13.10361 0 0 0 1</matrix>
