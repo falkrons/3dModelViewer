@@ -5,8 +5,8 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.78.0 commit date:2016-10-24, commit time:12:20, hash:e8299c8</authoring_tool>
     </contributor>
-    <created>2018-04-04T20:21:32</created>
-    <modified>2018-04-04T20:21:32</modified>
+    <created>2018-04-08T19:06:23</created>
+    <modified>2018-04-08T19:06:23</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -167,21 +167,24 @@
     </light>
   </library_lights>
   <library_images>
-    <image id="house_001_png" name="house_001_png">
-      <init_from>house.001.png</init_from>
+    <image id="house_002_png" name="house_002_png">
+      <init_from>house.002.png</init_from>
+    </image>
+    <image id="House_1" name="House_1">
+      <init_from>House_1.png</init_from>
     </image>
   </library_images>
   <library_effects>
     <effect id="Material_001-effect">
       <profile_COMMON>
-        <newparam sid="house_001_png-surface">
+        <newparam sid="House_1-surface">
           <surface type="2D">
-            <init_from>house_001_png</init_from>
+            <init_from>House_1</init_from>
           </surface>
         </newparam>
-        <newparam sid="house_001_png-sampler">
+        <newparam sid="House_1-sampler">
           <sampler2D>
-            <source>house_001_png-surface</source>
+            <source>House_1-surface</source>
           </sampler2D>
         </newparam>
         <technique sid="common">
@@ -193,7 +196,7 @@
               <color sid="ambient">0 0 0 1</color>
             </ambient>
             <diffuse>
-              <texture texture="house_001_png-sampler" texcoord="UVMap"/>
+              <texture texture="House_1-sampler" texcoord="UVMap"/>
             </diffuse>
             <specular>
               <color sid="specular">0.5 0.5 0.5 1</color>
